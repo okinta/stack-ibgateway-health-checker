@@ -1,0 +1,26 @@
+variant: fcos
+version: 1.0.0
+passwd:
+  users:
+    - name: ibgatewayhealthchecker
+
+systemd:
+  units:
+    - name: ibgatewayhealthchecker.service
+      enabled: true
+      contents: |
+        [Unit]
+        Description=IB Gateway Health Checker
+        After=network-online.target
+        Wants=network-online.target
+
+        [Service]
+        User=ibgatewayhealthchecker
+        TimeoutStartSec=0
+        ExecStartPre=-/bin/podman kill ibgatewayhealthchecker
+        ExecStartPre=-/bin/podman rm ibgatewayhealthchecker
+        ExecStartPre=/bin/podman pull okinta/stack-ibgateway-health-checker
+        ExecStart=/bin/podman run --name ibgatewayhealthchecker okinta/stack-ibgateway-health-checker
+
+        [Install]
+        WantedBy=multi-user.target
