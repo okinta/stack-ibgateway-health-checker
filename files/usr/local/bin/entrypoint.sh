@@ -12,7 +12,7 @@ fi
 export PT_INT_ID
 
 if [ "$1" = "run" ]; then
-    exec ibgateway-health-checker -h ibgateway.in.okinta.ge -p "$PT_INT_ID"
+    exec ibgateway-health-checker --host ibgateway.in.okinta.ge --pagertree-int-id "$PT_INT_ID"
 else
     exec "$@"
 fi
